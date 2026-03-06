@@ -1,6 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import Dashboard from './pages/Dashboard';
+import DailyReportPage from './pages/DailyReportPage';
+import AnonymousReportPage from './pages/AnonymousReportPage';
+import ChatPage from './pages/ChatPage';
+import AnnouncementsPage from './pages/AnnouncementsPage';
 import Layout from './components/layout/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -13,6 +17,22 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout children={<Dashboard />} />}>
             <Route path="/" element={<Dashboard />} />
+          </Route>
+
+          <Route element={<Layout children={<DailyReportPage />} />}>
+            <Route path="/reports/daily" element={<DailyReportPage />} />
+          </Route>
+
+          <Route element={<Layout children={<AnonymousReportPage />} />}>
+            <Route path="/reports/anonymous" element={<AnonymousReportPage />} />
+          </Route>
+
+          <Route element={<Layout children={<ChatPage />} />}>
+            <Route path="/chat" element={<ChatPage />} />
+          </Route>
+
+          <Route element={<Layout children={<AnnouncementsPage />} />}>
+            <Route path="/announcements" element={<AnnouncementsPage />} />
           </Route>
 
           {/* Placeholder routes for Phase 1 completion */}

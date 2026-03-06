@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore';
-import { LogOut, LayoutDashboard, CheckSquare, Users, Bell } from 'lucide-react';
+import { LogOut, LayoutDashboard, CheckSquare, Users, Bell, FileText, ShieldAlert, MessageSquare } from 'lucide-react';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const { user, logout } = useAuthStore();
@@ -19,12 +19,15 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                     <h1 className="text-2xl font-bold gradient-text">Workforce</h1>
                 </div>
 
-                <nav className="flex-1 px-4 space-y-2">
+                <nav className="flex-1 px-4 space-y-2 overflow-y-auto">
                     <NavItem icon={<LayoutDashboard size={20} />} label="Dashboard" onClick={() => navigate('/')} />
                     <NavItem icon={<CheckSquare size={20} />} label="Tasks" onClick={() => navigate('/tasks')} />
+                    <NavItem icon={<FileText size={20} />} label="Daily Report" onClick={() => navigate('/reports/daily')} />
+                    <NavItem icon={<ShieldAlert size={20} />} label="Anonymous Report" onClick={() => navigate('/reports/anonymous')} />
                     {user?.role === 'admin' && (
                         <NavItem icon={<Users size={20} />} label="Employees" onClick={() => navigate('/employees')} />
                     )}
+                    <NavItem icon={<MessageSquare size={20} />} label="Chat" onClick={() => navigate('/chat')} />
                     <NavItem icon={<Bell size={20} />} label="Announcements" onClick={() => navigate('/announcements')} />
                 </nav>
 
