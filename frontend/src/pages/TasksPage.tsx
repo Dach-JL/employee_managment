@@ -1,12 +1,17 @@
 import { useState, useEffect } from 'react';
 import api from '../api/api';
 import { useAuthStore } from '../store/useAuthStore';
-import { Plus, CheckCircle2, Clock, AlertCircle, Paperclip, MoreHorizontal } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Plus, LayoutGrid, List, Calendar as CalendarIcon } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import TaskDetailsModal from '../components/tasks/TaskDetailsModal';
 import CreateTaskModal from '../components/tasks/CreateTaskModal';
 
-interface Task {
+// Views
+import KanbanView from '../components/tasks/KanbanView';
+import ListView from '../components/tasks/ListView';
+import CalendarView from '../components/tasks/CalendarView';
+
+export interface Task {
     id: string;
     title: string;
     description: string;
@@ -16,11 +21,15 @@ interface Task {
     attachments?: { name: string; url: string; size: number; type: string }[];
 }
 
+type ViewMode = 'kanban' | 'list' | 'calendar';
+
 const TasksPage = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
     const [showCreateModal, setShowCreateModal] = useState(false);
+    const [viewMode, setViewMode] = useState<ViewMode>('kanban');
+
     const { user } = useAuthStore();
     const isAdmin = user?.role === 'admin';
 
@@ -39,89 +48,76 @@ const TasksPage = () => {
         }
     };
 
-    const getStatusIcon = (status: string) => {
-        switch (status) {
-            case 'completed': return <CheckCircle2 className="text-emerald-500" size={18} />;
-            case 'in-progress': return <Clock className="text-blue-500" size={18} />;
-            case 'pending': return <AlertCircle className="text-amber-500" size={18} />;
-            default: return <AlertCircle className="text-slate-500" size={18} />;
-        }
-    };
-
-    const getPriorityColor = (priority: string) => {
-        switch (priority) {
-            case 'high': return 'bg-rose-500/20 text-rose-500';
-            case 'medium': return 'bg-amber-500/20 text-amber-500';
-            default: return 'bg-emerald-500/20 text-emerald-500';
-        }
+    const containerVariants = {
+        hidden: { opacity: 0, y: 10 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
     };
 
     return (
-        <div className="space-y-8">
-            <header className="flex justify-between items-center">
+        <div className="space-y-8 flex flex-col h-full">
+            <header className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
-                    <h1 className="text-4xl font-black tracking-tighter mb-2">Tasks</h1>
-                    <p className="text-slate-400">Manage and track your operational assignments.</p>
+                    <h1 className="text-4xl font-black gradient-text-glow tracking-tighter mb-1 uppercase">Operations</h1>
+                    <p className="text-slate-400 font-medium text-sm">Manage, track, and execute your operational assignments.</p>
                 </div>
-                {isAdmin && (
-                    <button
-                        onClick={() => setShowCreateModal(true)}
-                        className="bg-primary hover:bg-primary-hover text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 transition-all hover:scale-105"
-                    >
-                        <Plus size={20} />
-                        New Task
-                    </button>
-                )}
+
+                <div className="flex flex-col sm:flex-row items-end sm:items-center gap-4">
+                    {/* View Toggles */}
+                    <div className="glass p-1 rounded-xl flex items-center shadow-inner-dark border-white/5">
+                        <button
+                            onClick={() => setViewMode('kanban')}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${viewMode === 'kanban' ? 'bg-primary shadow-[0_0_15px_rgba(79,124,255,0.4)] text-white' : 'text-slate-500 hover:text-white hover:bg-white/5'}`}
+                        >
+                            <LayoutGrid size={14} /> Kanban
+                        </button>
+                        <button
+                            onClick={() => setViewMode('list')}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${viewMode === 'list' ? 'bg-primary shadow-[0_0_15px_rgba(79,124,255,0.4)] text-white' : 'text-slate-500 hover:text-white hover:bg-white/5'}`}
+                        >
+                            <List size={14} /> List
+                        </button>
+                        <button
+                            onClick={() => setViewMode('calendar')}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${viewMode === 'calendar' ? 'bg-primary shadow-[0_0_15px_rgba(79,124,255,0.4)] text-white' : 'text-slate-500 hover:text-white hover:bg-white/5'}`}
+                        >
+                            <CalendarIcon size={14} /> Calendar
+                        </button>
+                    </div>
+
+                    {isAdmin && (
+                        <button
+                            onClick={() => setShowCreateModal(true)}
+                            className="btn-primary px-6 py-2.5 flex items-center gap-2 shadow-glow-blue"
+                        >
+                            <Plus size={18} />
+                            <span>New Task</span>
+                        </button>
+                    )}
+                </div>
             </header>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <main className="flex-1 w-full mt-4">
                 {loading ? (
-                    Array(6).fill(0).map((_, i) => (
-                        <div key={i} className="glass h-48 rounded-3xl animate-pulse bg-slate-800/20" />
-                    ))
-                ) : tasks.map(task => (
-                    <motion.div
-                        key={task.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        onClick={() => setSelectedTask(task)}
-                        className="glass p-6 rounded-3xl hover:border-primary/50 transition-all group flex flex-col cursor-pointer"
-                    >
-                        <div className="flex justify-between items-start mb-4">
-                            <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${getPriorityColor(task.priority)}`}>
-                                {task.priority}
-                            </span>
-                            <button className="text-slate-500 hover:text-white transition-colors">
-                                <MoreHorizontal size={20} />
-                            </button>
-                        </div>
-
-                        <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">{task.title}</h3>
-                        <p className="text-sm text-slate-400 line-clamp-2 mb-6 flex-1">{task.description}</p>
-
-                        <div className="flex items-center justify-between pt-4 border-t border-slate-800">
-                            <div className="flex items-center gap-2">
-                                {getStatusIcon(task.status)}
-                                <span className="text-xs font-bold uppercase tracking-tighter text-slate-300">{task.status.replace('-', ' ')}</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                {task.attachments && task.attachments.length > 0 && (
-                                    <div className="flex items-center gap-1 text-slate-500">
-                                        <Paperclip size={14} />
-                                        <span className="text-[10px]">{task.attachments.length}</span>
-                                    </div>
-                                )}
-                                <div className="text-right">
-                                    <p className="text-[10px] text-slate-500 uppercase">Due</p>
-                                    <p className="text-xs font-bold">
-                                        {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No date'}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </motion.div>
-                ))}
-            </div>
+                    <div className="flex items-center justify-center h-64">
+                        <div className="w-10 h-10 border-4 border-primary/30 border-t-primary rounded-full animate-spin shadow-[0_0_15px_rgba(79,124,255,0.5)]"></div>
+                    </div>
+                ) : (
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={viewMode}
+                            initial="hidden"
+                            animate="visible"
+                            exit={{ opacity: 0, y: -10, transition: { duration: 0.2 } }}
+                            variants={containerVariants}
+                            className="w-full"
+                        >
+                            {viewMode === 'kanban' && <KanbanView tasks={tasks} onTaskClick={setSelectedTask} onStatusChange={fetchTasks} />}
+                            {viewMode === 'list' && <ListView tasks={tasks} onTaskClick={setSelectedTask} />}
+                            {viewMode === 'calendar' && <CalendarView tasks={tasks} onTaskClick={setSelectedTask} />}
+                        </motion.div>
+                    </AnimatePresence>
+                )}
+            </main>
 
             {selectedTask && (
                 <TaskDetailsModal
