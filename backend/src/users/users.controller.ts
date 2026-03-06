@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { Role } from './enums/role.enum';
@@ -28,6 +28,18 @@ export class UsersController {
         return this.usersService.findAll();
     }
 
+    @Get('search')
+    @ApiOperation({ summary: 'Search for colleagues' })
+    search() {
+        return this.usersService.findAllPublic();
+    }
+
+    @Patch('avatar')
+    @ApiOperation({ summary: 'Update profile picture' })
+    updateAvatar(@Request() req, @Body('avatarUrl') avatarUrl: string) {
+        return this.usersService.updateAvatar(req.user.id, avatarUrl);
+    }
+
     @Get(':id')
     @ApiOperation({ summary: 'Get a user by ID' })
     findOne(@Param('id') id: string) {
@@ -40,10 +52,18 @@ export class UsersController {
         return this.usersService.update(id, updateData);
     }
 
-    @Get('search')
-    @ApiOperation({ summary: 'Search for colleagues' })
-    search() {
-        return this.usersService.findAllPublic();
+    @Post(':id/deactivate')
+    @Roles(Role.ADMIN)
+    @ApiOperation({ summary: 'Deactivate a user (Admin only)' })
+    deactivate(@Param('id') id: string) {
+        return this.usersService.deactivate(id);
+    }
+
+    @Post(':id/reset-password')
+    @Roles(Role.ADMIN)
+    @ApiOperation({ summary: 'Reset a user password (Admin only)' })
+    resetPassword(@Param('id') id: string, @Body('newPassword') newPassword: string) {
+        return this.usersService.resetPassword(id, newPassword);
     }
 
     @Delete(':id')

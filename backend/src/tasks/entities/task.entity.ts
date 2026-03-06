@@ -51,6 +51,9 @@ export class Task {
     @Column({ nullable: true })
     rejectionReason: string;
 
+    @Column('simple-json', { nullable: true })
+    attachments: { name: string; url: string; size: number; type: string }[];
+
     @CreateDateColumn()
     createdAt: Date;
 

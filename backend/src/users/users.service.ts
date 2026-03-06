@@ -58,6 +58,25 @@ export class UsersService {
         return this.findOne(id);
     }
 
+    async updateAvatar(userId: string, avatarUrl: string): Promise<User> {
+        await this.usersRepository.update(userId, { avatarUrl });
+        return this.findOne(userId);
+    }
+
+    async deactivate(id: string): Promise<void> {
+        await this.usersRepository.update(id, { isActive: false });
+    }
+
+    async remove(id: string): Promise<void> {
+        await this.deactivate(id);
+    }
+
+    async resetPassword(id: string, newPassword: string): Promise<void> {
+        const salt = await bcrypt.genSalt();
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+        await this.usersRepository.update(id, { password: hashedPassword });
+    }
+
     async search(query: string): Promise<User[]> {
         return this.usersRepository.find({
             where: [

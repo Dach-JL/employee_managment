@@ -39,6 +39,14 @@ export class TasksController {
         return this.tasksService.update(id, updateData, req.user);
     }
 
+    @Post(':id/attachments')
+    @ApiOperation({ summary: 'Attach files to a task' })
+    async attachFiles(@Param('id') id: string, @Body('attachments') attachments: any[]) {
+        const task = await this.tasksService.findOne(id);
+        const currentAttachments = task.attachments || [];
+        return this.tasksService.update(id, { attachments: [...currentAttachments, ...attachments] } as any, { role: Role.ADMIN } as any);
+    }
+
     @Delete(':id')
     @Roles(Role.ADMIN)
     @ApiOperation({ summary: 'Delete a task (Admin only)' })

@@ -36,15 +36,22 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 </nav>
 
                 <div className="p-4 border-t border-slate-700">
-                    <div className="flex items-center gap-3 p-2 mb-4">
-                        <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
-                            {user?.name?.[0] || 'U'}
+                    <button
+                        onClick={() => navigate('/profile')}
+                        className="flex items-center gap-3 p-2 mb-4 w-full hover:bg-slate-800 rounded-xl transition-all group"
+                    >
+                        <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center text-primary font-bold overflow-hidden">
+                            {user?.avatarUrl ? (
+                                <img src={user.avatarUrl} alt="" className="w-full h-full object-cover" />
+                            ) : (
+                                user?.name?.[0] || 'U'
+                            )}
                         </div>
-                        <div className="overflow-hidden">
-                            <p className="font-medium truncate">{user?.name || 'User'}</p>
-                            <p className="text-xs text-slate-400 capitalize">{user?.role || 'role'}</p>
+                        <div className="overflow-hidden text-left">
+                            <p className="font-bold truncate group-hover:text-primary transition-colors">{user?.name || 'User'}</p>
+                            <p className="text-[10px] text-slate-500 uppercase tracking-tighter">{user?.role || 'role'}</p>
                         </div>
-                    </div>
+                    </button>
                     <button
                         onClick={handleLogout}
                         className="w-full flex items-center gap-2 p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"

@@ -7,6 +7,9 @@ import ChatPage from './pages/ChatPage';
 import AnnouncementsPage from './pages/AnnouncementsPage';
 import AnalyticsPage from './pages/AnalyticsPage';
 import PrivateMessagingPage from './pages/PrivateMessagingPage';
+import TasksPage from './pages/TasksPage';
+import ManageUsersPage from './pages/ManageUsersPage';
+import ProfilePage from './pages/ProfilePage';
 import Layout from './components/layout/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -45,19 +48,18 @@ function App() {
             <Route path="/messages" element={<PrivateMessagingPage />} />
           </Route>
 
-          {/* Placeholder routes for Phase 1 completion */}
-          <Route element={<Layout children={<div>Tasks Page</div>} />}>
-            <Route path="/tasks" element={<div>Tasks Page</div>} />
+          <Route element={<Layout children={<TasksPage />} />}>
+            <Route path="/tasks" element={<TasksPage />} />
           </Route>
 
           <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-            <Route element={<Layout children={<div>Employees Page</div>} />}>
-              <Route path="/employees" element={<div>Employees Page</div>} />
+            <Route element={<Layout children={<ManageUsersPage />} />}>
+              <Route path="/employees" element={<ManageUsersPage />} />
             </Route>
           </Route>
 
-          <Route element={<Layout children={<div>Announcements Page</div>} />}>
-            <Route path="/announcements" element={<div>Announcements Page</div>} />
+          <Route element={<Layout children={<ProfilePage />} />}>
+            <Route path="/profile" element={<ProfilePage />} />
           </Route>
         </Route>
 

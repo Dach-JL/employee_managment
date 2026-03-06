@@ -13,6 +13,7 @@ import { TasksModule } from './tasks/tasks.module';
 import { ReportsModule } from './reports/reports.module';
 import { ChatModule } from './chat/chat.module';
 import { AnalyticsModule } from './analytics/analytics.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { AnalyticsModule } from './analytics/analytics.module';
     ReportsModule,
     ChatModule,
     AnalyticsModule,
+    FilesModule,
   ],
   providers: [AppService],
 })
