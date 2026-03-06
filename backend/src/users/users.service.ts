@@ -58,9 +58,20 @@ export class UsersService {
         return this.findOne(id);
     }
 
-    async remove(id: string): Promise<void> {
-        const user = await this.findOne(id);
-        user.isActive = false; // Soft delete as per documentation
-        await this.usersRepository.save(user);
+    async search(query: string): Promise<User[]> {
+        return this.usersRepository.find({
+            where: [
+                { name: query, isActive: true },
+                { email: query, isActive: true },
+            ],
+            select: ['id', 'name', 'email', 'role'],
+        });
+    }
+
+    async findAllPublic(): Promise<User[]> {
+        return this.usersRepository.find({
+            where: { isActive: true },
+            select: ['id', 'name', 'email', 'role'],
+        });
     }
 }

@@ -40,6 +40,12 @@ export class UsersController {
         return this.usersService.update(id, updateData);
     }
 
+    @Get('search')
+    @ApiOperation({ summary: 'Search for colleagues' })
+    search() {
+        return this.usersService.findAllPublic();
+    }
+
     @Delete(':id')
     @Roles(Role.ADMIN)
     @ApiOperation({ summary: 'Soft-delete a user (Admin only)' })

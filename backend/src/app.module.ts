@@ -4,9 +4,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { User } from './users/entities/user.entity';
 import { Task } from './tasks/entities/task.entity';
+import { Report } from './reports/entities/report.entity';
+import { AnonymousReport } from './reports/entities/anonymous-report.entity';
+import { PrivateMessage } from './chat/entities/private-message.entity';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { TasksModule } from './tasks/tasks.module';
+import { ReportsModule } from './reports/reports.module';
+import { ChatModule } from './chat/chat.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 @Module({
   imports: [
@@ -22,7 +28,7 @@ import { TasksModule } from './tasks/tasks.module';
           return {
             type: 'sqlite',
             database: 'db.sqlite',
-            entities: [User, Task],
+            entities: [User, Task, Report, AnonymousReport, PrivateMessage],
             synchronize: true,
           };
         }
@@ -33,7 +39,7 @@ import { TasksModule } from './tasks/tasks.module';
           username: configService.get<string>('DB_USERNAME'),
           password: configService.get<string>('DB_PASSWORD'),
           database: configService.get<string>('DB_DATABASE'),
-          entities: [User, Task],
+          entities: [User, Task, Report, AnonymousReport, PrivateMessage],
           synchronize: true,
         };
       },
@@ -41,6 +47,9 @@ import { TasksModule } from './tasks/tasks.module';
     UsersModule,
     AuthModule,
     TasksModule,
+    ReportsModule,
+    ChatModule,
+    AnalyticsModule,
   ],
   providers: [AppService],
 })

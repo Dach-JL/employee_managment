@@ -5,6 +5,8 @@ import DailyReportPage from './pages/DailyReportPage';
 import AnonymousReportPage from './pages/AnonymousReportPage';
 import ChatPage from './pages/ChatPage';
 import AnnouncementsPage from './pages/AnnouncementsPage';
+import AnalyticsPage from './pages/AnalyticsPage';
+import PrivateMessagingPage from './pages/PrivateMessagingPage';
 import Layout from './components/layout/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -33,6 +35,14 @@ function App() {
 
           <Route element={<Layout children={<AnnouncementsPage />} />}>
             <Route path="/announcements" element={<AnnouncementsPage />} />
+          </Route>
+
+          <Route element={<Layout children={<AnalyticsPage />} />}>
+            <Route path="/analytics" element={<AnalyticsPage />} />
+          </Route>
+
+          <Route element={<Layout children={<PrivateMessagingPage />} />}>
+            <Route path="/messages" element={<PrivateMessagingPage />} />
           </Route>
 
           {/* Placeholder routes for Phase 1 completion */}

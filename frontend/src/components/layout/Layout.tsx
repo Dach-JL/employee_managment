@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore';
-import { LogOut, LayoutDashboard, CheckSquare, Users, Bell, FileText, ShieldAlert, MessageSquare } from 'lucide-react';
+import { LogOut, LayoutDashboard, CheckSquare, Users, Bell, FileText, ShieldAlert, MessageSquare, Mail, BarChart } from 'lucide-react';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const { user, logout } = useAuthStore();
@@ -28,7 +28,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                         <NavItem icon={<Users size={20} />} label="Employees" onClick={() => navigate('/employees')} />
                     )}
                     <NavItem icon={<MessageSquare size={20} />} label="Chat" onClick={() => navigate('/chat')} />
+                    <NavItem icon={<Mail size={20} />} label="Messages" onClick={() => navigate('/messages')} />
                     <NavItem icon={<Bell size={20} />} label="Announcements" onClick={() => navigate('/announcements')} />
+                    {user?.role === 'admin' && (
+                        <NavItem icon={<BarChart size={20} />} label="Analytics" onClick={() => navigate('/analytics')} />
+                    )}
                 </nav>
 
                 <div className="p-4 border-t border-slate-700">
