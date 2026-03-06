@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useAuthStore } from './store/useAuthStore';
 import LoginPage from './pages/LoginPage';
 import Dashboard from './pages/Dashboard';
+import EmployeeDashboard from './pages/EmployeeDashboard';
 import DailyReportPage from './pages/DailyReportPage';
 import AnonymousReportPage from './pages/AnonymousReportPage';
 import ChatPage from './pages/ChatPage';
@@ -15,6 +17,13 @@ import ProtectedRoute from './components/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 import { ToastProvider } from './components/ui/ToastProvider';
 
+// Helper component for dynamic root routing based on role
+const RoleBasedDashboard = () => {
+  const { user } = useAuthStore();
+  if (!user) return <Navigate to="/login" replace />;
+  return user.role === 'admin' ? <Dashboard /> : <EmployeeDashboard />;
+};
+
 function App() {
   return (
     <ErrorBoundary>
@@ -24,8 +33,16 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
 
             <Route element={<ProtectedRoute />}>
+              <Route element={<Layout children={<RoleBasedDashboard />} />}>
+                <Route path="/" element={<RoleBasedDashboard />} />
+              </Route>
+
+              {/* Explicit paths for manual navigation if needed */}
               <Route element={<Layout children={<Dashboard />} />}>
-                <Route path="/" element={<Dashboard />} />
+                <Route path="/admin-dashboard" element={<Dashboard />} />
+              </Route>
+              <Route element={<Layout children={<EmployeeDashboard />} />}>
+                <Route path="/staff-dashboard" element={<EmployeeDashboard />} />
               </Route>
 
               <Route element={<Layout children={<DailyReportPage />} />}>
