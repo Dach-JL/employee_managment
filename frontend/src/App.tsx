@@ -12,60 +12,66 @@ import ManageUsersPage from './pages/ManageUsersPage';
 import ProfilePage from './pages/ProfilePage';
 import Layout from './components/layout/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
+import ErrorBoundary from './components/ErrorBoundary';
+import { ToastProvider } from './components/ui/ToastProvider';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
+    <ErrorBoundary>
+      <ToastProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
 
-        <Route element={<ProtectedRoute />}>
-          <Route element={<Layout children={<Dashboard />} />}>
-            <Route path="/" element={<Dashboard />} />
-          </Route>
+            <Route element={<ProtectedRoute />}>
+              <Route element={<Layout children={<Dashboard />} />}>
+                <Route path="/" element={<Dashboard />} />
+              </Route>
 
-          <Route element={<Layout children={<DailyReportPage />} />}>
-            <Route path="/reports/daily" element={<DailyReportPage />} />
-          </Route>
+              <Route element={<Layout children={<DailyReportPage />} />}>
+                <Route path="/reports/daily" element={<DailyReportPage />} />
+              </Route>
 
-          <Route element={<Layout children={<AnonymousReportPage />} />}>
-            <Route path="/reports/anonymous" element={<AnonymousReportPage />} />
-          </Route>
+              <Route element={<Layout children={<AnonymousReportPage />} />}>
+                <Route path="/reports/anonymous" element={<AnonymousReportPage />} />
+              </Route>
 
-          <Route element={<Layout children={<ChatPage />} />}>
-            <Route path="/chat" element={<ChatPage />} />
-          </Route>
+              <Route element={<Layout children={<ChatPage />} />}>
+                <Route path="/chat" element={<ChatPage />} />
+              </Route>
 
-          <Route element={<Layout children={<AnnouncementsPage />} />}>
-            <Route path="/announcements" element={<AnnouncementsPage />} />
-          </Route>
+              <Route element={<Layout children={<AnnouncementsPage />} />}>
+                <Route path="/announcements" element={<AnnouncementsPage />} />
+              </Route>
 
-          <Route element={<Layout children={<AnalyticsPage />} />}>
-            <Route path="/analytics" element={<AnalyticsPage />} />
-          </Route>
+              <Route element={<Layout children={<AnalyticsPage />} />}>
+                <Route path="/analytics" element={<AnalyticsPage />} />
+              </Route>
 
-          <Route element={<Layout children={<PrivateMessagingPage />} />}>
-            <Route path="/messages" element={<PrivateMessagingPage />} />
-          </Route>
+              <Route element={<Layout children={<PrivateMessagingPage />} />}>
+                <Route path="/messages" element={<PrivateMessagingPage />} />
+              </Route>
 
-          <Route element={<Layout children={<TasksPage />} />}>
-            <Route path="/tasks" element={<TasksPage />} />
-          </Route>
+              <Route element={<Layout children={<TasksPage />} />}>
+                <Route path="/tasks" element={<TasksPage />} />
+              </Route>
 
-          <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-            <Route element={<Layout children={<ManageUsersPage />} />}>
-              <Route path="/employees" element={<ManageUsersPage />} />
+              <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+                <Route element={<Layout children={<ManageUsersPage />} />}>
+                  <Route path="/employees" element={<ManageUsersPage />} />
+                </Route>
+              </Route>
+
+              <Route element={<Layout children={<ProfilePage />} />}>
+                <Route path="/profile" element={<ProfilePage />} />
+              </Route>
             </Route>
-          </Route>
 
-          <Route element={<Layout children={<ProfilePage />} />}>
-            <Route path="/profile" element={<ProfilePage />} />
-          </Route>
-        </Route>
-
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </ToastProvider>
+    </ErrorBoundary>
   );
 }
 

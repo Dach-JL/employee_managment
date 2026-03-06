@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import api from '../api/api';
 import { useAuthStore } from '../store/useAuthStore';
+import { useToast } from '../components/ui/ToastProvider';
 import { UserMinus, RotateCcw, Search } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 interface User {
     id: string;
@@ -18,6 +18,7 @@ const ManageUsersPage = () => {
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const { user: currentUser } = useAuthStore();
+    const { toast } = useToast();
 
     useEffect(() => {
         fetchUsers();
@@ -40,7 +41,7 @@ const ManageUsersPage = () => {
             await api.post(`/users/${id}/deactivate`);
             fetchUsers();
         } catch (error) {
-            alert('Failed to deactivate user');
+            toast('Failed to deactivate user', 'error');
         }
     };
 
@@ -49,9 +50,9 @@ const ManageUsersPage = () => {
         if (!newPassword) return;
         try {
             await api.post(`/users/${id}/reset-password`, { newPassword });
-            alert('Password reset successfully');
+            toast('Password reset successfully', 'success');
         } catch (error) {
-            alert('Failed to reset password');
+            toast('Failed to reset password', 'error');
         }
     };
 

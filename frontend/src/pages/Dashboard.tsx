@@ -1,9 +1,50 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '../store/useAuthStore';
-import { Clock, CheckCircle, AlertCircle, ListTodo } from 'lucide-react';
+import { Clock, CheckCircle, AlertCircle, ListTodo, FileText, ShieldAlert, MessageSquare } from 'lucide-react';
+import api from '../api/api';
+
+interface TaskStats {
+    active: number;
+    inProgress: number;
+    completed: number;
+    overdue: number;
+}
 
 const Dashboard = () => {
     const { user } = useAuthStore();
+    const navigate = useNavigate();
+    const [stats, setStats] = useState<TaskStats>({ active: 0, inProgress: 0, completed: 0, overdue: 0 });
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                const res = await api.get('/tasks');
+                const tasks = res.data;
+                const now = new Date();
+                setStats({
+                    active: tasks.filter((t: any) => t.status === 'pending').length,
+                    inProgress: tasks.filter((t: any) => t.status === 'in-progress').length,
+                    completed: tasks.filter((t: any) => t.status === 'completed').length,
+                    overdue: tasks.filter((t: any) => t.status !== 'completed' && t.dueDate && new Date(t.dueDate) < now).length,
+                });
+            } catch (error) {
+                console.error('Failed to fetch stats', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchStats();
+    }, []);
+
+    const quickActions = [
+        { label: 'Submit Daily Report', path: '/reports/daily', icon: <FileText size={18} className="text-primary" /> },
+        { label: 'View All Tasks', path: '/tasks', icon: <ListTodo size={18} className="text-primary" /> },
+        { label: 'Anonymous Feedback', path: '/reports/anonymous', icon: <ShieldAlert size={18} className="text-primary" /> },
+        { label: 'Open Chat', path: '/chat', icon: <MessageSquare size={18} className="text-primary" /> },
+    ];
 
     return (
         <div className="space-y-10">
@@ -13,10 +54,10 @@ const Dashboard = () => {
             </header>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <StatCard icon={<ListTodo className="text-primary" />} label="Active Tasks" value="12" />
-                <StatCard icon={<Clock className="text-warning" />} label="In Progress" value="5" />
-                <StatCard icon={<CheckCircle className="text-success" />} label="Completed" value="48" />
-                <StatCard icon={<AlertCircle className="text-danger" />} label="Overdue" value="3" />
+                <StatCard icon={<ListTodo className="text-primary" />} label="Active Tasks" value={loading ? '—' : String(stats.active)} />
+                <StatCard icon={<Clock className="text-warning" />} label="In Progress" value={loading ? '—' : String(stats.inProgress)} />
+                <StatCard icon={<CheckCircle className="text-success" />} label="Completed" value={loading ? '—' : String(stats.completed)} />
+                <StatCard icon={<AlertCircle className="text-danger" />} label="Overdue" value={loading ? '—' : String(stats.overdue)} />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -31,19 +72,20 @@ const Dashboard = () => {
 
                 <section className="glass rounded-3xl p-8">
                     <h2 className="text-xl font-bold mb-6">Quick Actions</h2>
-                    <div className="space-y-4">
-                        <button className="w-full p-4 rounded-2xl bg-white/5 hover:bg-white/10 text-left transition-colors flex items-center justify-between group">
-                            <span>Submit Daily Report</span>
-                            <span className="text-slate-500 group-hover:text-white">→</span>
-                        </button>
-                        <button className="w-full p-4 rounded-2xl bg-white/5 hover:bg-white/10 text-left transition-colors flex items-center justify-between group">
-                            <span>View All Tasks</span>
-                            <span className="text-slate-500 group-hover:text-white">→</span>
-                        </button>
-                        <button className="w-full p-4 rounded-2xl bg-white/5 hover:bg-white/10 text-left transition-colors flex items-center justify-between group">
-                            <span>Anonymous Feedback</span>
-                            <span className="text-slate-500 group-hover:text-white">→</span>
-                        </button>
+                    <div className="space-y-3">
+                        {quickActions.map(action => (
+                            <button
+                                key={action.path}
+                                onClick={() => navigate(action.path)}
+                                className="w-full p-4 rounded-2xl bg-white/5 hover:bg-primary/10 text-left transition-all flex items-center gap-3 group"
+                            >
+                                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-all">
+                                    {action.icon}
+                                </div>
+                                <span className="font-medium flex-1">{action.label}</span>
+                                <span className="text-slate-500 group-hover:text-primary group-hover:translate-x-1 transition-all">→</span>
+                            </button>
+                        ))}
                     </div>
                 </section>
             </div>

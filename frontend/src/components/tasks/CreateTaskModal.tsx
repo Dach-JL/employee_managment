@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../../api/api';
+import { useToast } from '../ui/ToastProvider';
 import { X, Loader2, Save } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -10,6 +11,7 @@ interface Props {
 
 const CreateTaskModal = ({ onClose, onUpdate }: Props) => {
     const [loading, setLoading] = useState(false);
+    const { toast } = useToast();
     const [employees, setEmployees] = useState<{ id: string, name: string }[]>([]);
     const [formData, setFormData] = useState({
         title: '',
@@ -28,10 +30,10 @@ const CreateTaskModal = ({ onClose, onUpdate }: Props) => {
         setLoading(true);
         try {
             await api.post('/tasks', formData);
-            alert('Task created successfully!');
+            toast('Task created successfully!', 'success');
             onUpdate();
         } catch (error) {
-            alert('Failed to create task');
+            toast('Failed to create task', 'error');
         } finally {
             setLoading(false);
         }

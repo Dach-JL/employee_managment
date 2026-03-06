@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import api from '../api/api';
 import { useAuthStore } from '../store/useAuthStore';
+import { useToast } from '../components/ui/ToastProvider';
 import { Camera, Mail, Shield, User, Save, Loader2 } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 const ProfilePage = () => {
     const { user, setUser } = useAuthStore();
+    const { toast } = useToast();
     const [uploading, setUploading] = useState(false);
     const [name, setName] = useState(user?.name || '');
     const [saving, setSaving] = useState(false);
@@ -26,10 +27,10 @@ const ProfilePage = () => {
 
             await api.patch('/users/avatar', { avatarUrl });
             setUser({ ...user!, avatarUrl });
-            alert('Profile picture updated!');
+            toast('Profile picture updated!', 'success');
         } catch (error) {
             console.error('Upload failed', error);
-            alert('Failed to upload image');
+            toast('Failed to upload image', 'error');
         } finally {
             setUploading(false);
         }
@@ -41,9 +42,9 @@ const ProfilePage = () => {
         try {
             const res = await api.patch(`/users/${user?.id}`, { name });
             setUser(res.data);
-            alert('Profile updated successfully!');
+            toast('Profile updated successfully!', 'success');
         } catch (error) {
-            alert('Failed to update profile');
+            toast('Failed to update profile', 'error');
         } finally {
             setSaving(false);
         }
