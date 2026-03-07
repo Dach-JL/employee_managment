@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../api/api';
 import { useAuthStore } from '../store/useAuthStore';
 import { Plus, LayoutGrid, List, Calendar as CalendarIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import TaskDetailsModal from '../components/tasks/TaskDetailsModal';
 import CreateTaskModal from '../components/tasks/CreateTaskModal';
 
 // Views
@@ -26,10 +26,10 @@ type ViewMode = 'kanban' | 'list' | 'calendar';
 const TasksPage = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [loading, setLoading] = useState(true);
-    const [selectedTask, setSelectedTask] = useState<Task | null>(null);
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [viewMode, setViewMode] = useState<ViewMode>('kanban');
 
+    const navigate = useNavigate();
     const { user } = useAuthStore();
     const isAdmin = user?.role === 'admin';
 
@@ -111,24 +111,13 @@ const TasksPage = () => {
                             variants={containerVariants}
                             className="w-full"
                         >
-                            {viewMode === 'kanban' && <KanbanView tasks={tasks} onTaskClick={setSelectedTask} onStatusChange={fetchTasks} />}
-                            {viewMode === 'list' && <ListView tasks={tasks} onTaskClick={setSelectedTask} />}
-                            {viewMode === 'calendar' && <CalendarView tasks={tasks} onTaskClick={setSelectedTask} />}
+                            {viewMode === 'kanban' && <KanbanView tasks={tasks} onTaskClick={(t) => navigate(`/tasks/${t.id}`)} onStatusChange={fetchTasks} />}
+                            {viewMode === 'list' && <ListView tasks={tasks} onTaskClick={(t) => navigate(`/tasks/${t.id}`)} />}
+                            {viewMode === 'calendar' && <CalendarView tasks={tasks} onTaskClick={(t) => navigate(`/tasks/${t.id}`)} />}
                         </motion.div>
                     </AnimatePresence>
                 )}
             </main>
-
-            {selectedTask && (
-                <TaskDetailsModal
-                    task={selectedTask}
-                    onClose={() => setSelectedTask(null)}
-                    onUpdate={() => {
-                        fetchTasks();
-                        setSelectedTask(null);
-                    }}
-                />
-            )}
 
             {showCreateModal && (
                 <CreateTaskModal

@@ -10,6 +10,7 @@ import AnnouncementsPage from './pages/AnnouncementsPage';
 import AnalyticsPage from './pages/AnalyticsPage';
 import PrivateMessagingPage from './pages/PrivateMessagingPage';
 import TasksPage from './pages/TasksPage';
+import TaskDetailPage from './pages/TaskDetailPage';
 import ManageUsersPage from './pages/ManageUsersPage';
 import ProfilePage from './pages/ProfilePage';
 import Layout from './components/layout/Layout';
@@ -71,6 +72,9 @@ function App() {
 
               <Route element={<Layout children={<TasksPage />} />}>
                 <Route path="/tasks" element={<TasksPage />} />
+              </Route>
+              <Route element={<Layout children={<TaskDetailPage />} />}>
+                <Route path="/tasks/:id" element={<TaskDetailPage />} />
               </Route>
 
               <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
