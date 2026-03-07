@@ -48,7 +48,7 @@ const DailyReportPage = () => {
                 </motion.div>
             )}
 
-            <form onSubmit={handleSubmit} className="glass p-8 rounded-3xl space-y-6">
+            <form onSubmit={handleSubmit} className="glass p-4 md:p-8 rounded-3xl space-y-6">
                 <div className="space-y-2">
                     <label className="text-sm font-medium text-slate-300">What did you accomplish today?</label>
                     <textarea

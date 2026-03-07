@@ -50,13 +50,13 @@ const KanbanView = ({ tasks, onTaskClick, onStatusChange }: KanbanViewProps) => 
     };
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-[70vh] min-h-[500px]">
+        <div className="flex flex-nowrap md:grid md:grid-cols-3 gap-6 h-[70vh] min-h-[500px] overflow-x-auto snap-x snap-mandatory pb-4 scrollbar-hide">
             {columns.map(col => {
                 const columnTasks = tasks.filter(t => t.status === col.id);
                 return (
                     <div
                         key={col.id}
-                        className={`glass-card p-4 rounded-3xl flex flex-col relative overflow-hidden group/board`}
+                        className={`w-[85vw] shrink-0 md:w-auto snap-center glass-card p-4 rounded-3xl flex flex-col relative overflow-hidden group/board`}
                         onDragOver={handleDragOver}
                         onDrop={(e) => handleDrop(e, col.id)}
                     >
