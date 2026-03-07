@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ShieldCheck, Send, CheckCircle2, Lock, AlertTriangle, ShieldAlert } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ShieldCheck, CheckCircle2, Lock, AlertTriangle, ShieldAlert } from 'lucide-react';
 import api from '../api/api';
 
 const MAX_CHARS = 2000;
