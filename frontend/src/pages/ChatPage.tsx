@@ -3,6 +3,7 @@ import { io, Socket } from 'socket.io-client';
 import { useAuthStore } from '../store/useAuthStore';
 import { Send, Hash, Search, Paperclip, Smile, MoreVertical } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import NeonIcon from '../components/ui/NeonIcon';
 
 interface Message {
     id: string;
@@ -220,7 +221,7 @@ const ChatPage = () => {
                 <div className="p-4 md:p-6 border-t border-white/5 bg-bg-secondary/40 z-10 backdrop-blur-md">
                     <form onSubmit={handleSendMessage} className="relative flex items-center gap-3">
                         <button type="button" className="p-2 text-slate-500 hover:text-primary transition-colors hover:bg-white/5 rounded-xl hidden sm:block">
-                            <Paperclip size={20} />
+                            <NeonIcon icon={Paperclip} color="purple" size={20} />
                         </button>
 
                         <div className="relative flex-1 group">
@@ -232,7 +233,7 @@ const ChatPage = () => {
                                 placeholder={`Message #${activeChannel}...`}
                             />
                             <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-accent-purple transition-colors">
-                                <Smile size={20} />
+                                <NeonIcon icon={Smile} color="purple" size={20} />
                             </button>
                         </div>
 

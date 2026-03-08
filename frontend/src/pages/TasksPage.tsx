@@ -5,6 +5,7 @@ import api from '../api/api';
 import { useAuthStore } from '../store/useAuthStore';
 import { Plus, LayoutGrid, List, Calendar as CalendarIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import NeonIcon from '../components/ui/NeonIcon';
 import CreateTaskModal from '../components/tasks/CreateTaskModal';
 
 // Views
@@ -69,19 +70,19 @@ const TasksPage = () => {
                             onClick={() => setViewMode('kanban')}
                             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${viewMode === 'kanban' ? 'bg-primary shadow-[0_0_15px_rgba(79,124,255,0.4)] text-white' : 'text-slate-500 hover:text-white hover:bg-white/5'}`}
                         >
-                            <LayoutGrid size={14} /> Kanban
+                            <NeonIcon icon={LayoutGrid} color={viewMode === 'kanban' ? 'primary' : 'primary'} size={14} /> Kanban
                         </button>
                         <button
                             onClick={() => setViewMode('list')}
                             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${viewMode === 'list' ? 'bg-primary shadow-[0_0_15px_rgba(79,124,255,0.4)] text-white' : 'text-slate-500 hover:text-white hover:bg-white/5'}`}
                         >
-                            <List size={14} /> List
+                            <NeonIcon icon={List} color={viewMode === 'list' ? 'primary' : 'primary'} size={14} /> List
                         </button>
                         <button
                             onClick={() => setViewMode('calendar')}
                             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${viewMode === 'calendar' ? 'bg-primary shadow-[0_0_15px_rgba(79,124,255,0.4)] text-white' : 'text-slate-500 hover:text-white hover:bg-white/5'}`}
                         >
-                            <CalendarIcon size={14} /> Calendar
+                            <NeonIcon icon={CalendarIcon} color={viewMode === 'calendar' ? 'primary' : 'primary'} size={14} /> Calendar
                         </button>
                     </div>
 
@@ -90,7 +91,7 @@ const TasksPage = () => {
                             onClick={() => setShowCreateModal(true)}
                             className="btn-primary px-6 py-2.5 flex items-center gap-2 shadow-glow-blue"
                         >
-                            <Plus size={18} />
+                            <NeonIcon icon={Plus} color="primary" size={18} />
                             <span>New Task</span>
                         </button>
                     )}

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Skeleton } from '../components/ui/Skeleton';
+import NeonIcon from '../components/ui/NeonIcon';
 import { useNavigate } from 'react-router-dom';
 import { motion, type Variants } from 'framer-motion';
 import { useAuthStore } from '../store/useAuthStore';
@@ -125,7 +126,7 @@ const Dashboard = () => {
                 {loading ? Array(5).fill(0).map((_, i) => <Skeleton key={i} className="h-[120px] rounded-xl" />) : (
                     <>
                         <StatCard
-                            icon={<Users className="text-neon-blue" />}
+                            icon={<NeonIcon icon={Users} color="primary" size={22} />}
                             label="Total Employees"
                             value={stats.totalEmployees.toString()}
                             trend="+12% this month"
@@ -133,14 +134,14 @@ const Dashboard = () => {
                             glowColor="neon-blue"
                         />
                         <StatCard
-                            icon={<Clock className="text-warning" />}
+                            icon={<NeonIcon icon={Clock} color="warning" size={22} />}
                             label="Tasks In Progress"
                             value={loading ? '-' : stats.inProgress.toString()}
                             trend="Active bandwidth"
                             glowColor="warning"
                         />
                         <StatCard
-                            icon={<CheckCircle2 className="text-success" />}
+                            icon={<NeonIcon icon={CheckCircle2} color="success" size={22} />}
                             label="Completed Tasks"
                             value={loading ? '-' : stats.completed.toString()}
                             trend="+5% from last week"
@@ -148,7 +149,7 @@ const Dashboard = () => {
                             glowColor="success"
                         />
                         <StatCard
-                            icon={<AlertCircle className="text-danger" />}
+                            icon={<NeonIcon icon={AlertCircle} color="danger" size={22} />}
                             label="Overdue Tasks"
                             value={loading ? '-' : stats.overdue.toString()}
                             trend="-2% from last week"
@@ -156,7 +157,7 @@ const Dashboard = () => {
                             glowColor="danger"
                         />
                         <StatCard
-                            icon={<ShieldAlert className="text-neon-purple" />}
+                            icon={<NeonIcon icon={ShieldAlert} color="purple" size={22} />}
                             label="Anonymous Reports"
                             value={stats.reports.toString()}
                             trend="Requires attention"

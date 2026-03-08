@@ -8,6 +8,7 @@ import {
 import TopBar from './TopBar';
 import ActivityPanel from './ActivityPanel';
 import MobileNav from './MobileNav';
+import NeonIcon from '../ui/NeonIcon';
 import { AnimatePresence, motion } from 'framer-motion';
 
 const Layout = () => {
@@ -45,22 +46,22 @@ const Layout = () => {
 
             <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto no-scrollbar">
                 <p className="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-4">Core</p>
-                <NavItem icon={<LayoutDashboard size={18} />} label="Dashboard" path="/" currentPath={location.pathname} onClick={() => navigate('/')} />
-                <NavItem icon={<CheckSquare size={18} />} label="Tasks" path="/tasks" currentPath={location.pathname} onClick={() => navigate('/tasks')} />
+                <NavItem icon={LayoutDashboard} label="Dashboard" path="/" currentPath={location.pathname} onClick={() => navigate('/')} />
+                <NavItem icon={CheckSquare} label="Tasks" path="/tasks" currentPath={location.pathname} onClick={() => navigate('/tasks')} />
 
                 <p className="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-4 mt-8">Reporting</p>
-                <NavItem icon={<FileText size={18} />} label="Daily Report" path="/reports/daily" currentPath={location.pathname} onClick={() => navigate('/reports/daily')} />
-                <NavItem icon={<ShieldAlert size={18} />} label="Anonymous Report" path="/reports/anonymous" currentPath={location.pathname} onClick={() => navigate('/reports/anonymous')} />
+                <NavItem icon={FileText} label="Daily Report" path="/reports/daily" currentPath={location.pathname} onClick={() => navigate('/reports/daily')} />
+                <NavItem icon={ShieldAlert} label="Anonymous Report" path="/reports/anonymous" currentPath={location.pathname} onClick={() => navigate('/reports/anonymous')} />
 
                 <p className="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-4 mt-8">Social</p>
-                <NavItem icon={<MessageSquare size={18} />} label="Chat" path="/chat" currentPath={location.pathname} onClick={() => navigate('/chat')} />
-                <NavItem icon={<Bell size={18} />} label="Announcements" path="/announcements" currentPath={location.pathname} onClick={() => navigate('/announcements')} />
+                <NavItem icon={MessageSquare} label="Chat" path="/chat" currentPath={location.pathname} onClick={() => navigate('/chat')} />
+                <NavItem icon={Bell} label="Announcements" path="/announcements" currentPath={location.pathname} onClick={() => navigate('/announcements')} />
 
                 {user?.role === 'admin' && (
                     <>
                         <p className="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-4 mt-8">Admin</p>
-                        <NavItem icon={<Users size={18} />} label="Employees" path="/employees" currentPath={location.pathname} onClick={() => navigate('/employees')} />
-                        <NavItem icon={<BarChart size={18} />} label="Analytics" path="/analytics" currentPath={location.pathname} onClick={() => navigate('/analytics')} />
+                        <NavItem icon={Users} label="Employees" path="/employees" currentPath={location.pathname} onClick={() => navigate('/employees')} />
+                        <NavItem icon={BarChart} label="Analytics" path="/analytics" currentPath={location.pathname} onClick={() => navigate('/analytics')} />
                     </>
                 )}
             </nav>
@@ -163,7 +164,7 @@ const Layout = () => {
     );
 };
 
-const NavItem = ({ icon, label, path, currentPath, onClick }: { icon: React.ReactNode; label: string; path: string; currentPath: string; onClick: () => void }) => {
+const NavItem = ({ icon, label, path, currentPath, onClick }: { icon: import('lucide-react').LucideIcon; label: string; path: string; currentPath: string; onClick: () => void }) => {
     const isActive = currentPath === path;
 
     return (
@@ -174,8 +175,8 @@ const NavItem = ({ icon, label, path, currentPath, onClick }: { icon: React.Reac
             {isActive && (
                 <div className="absolute inset-0 bg-primary/5 animate-pulse" />
             )}
-            <span className={`transition-all duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110 group-hover:text-primary'}`}>
-                {icon}
+            <span className={`transition-all duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`}>
+                <NeonIcon icon={icon} color={isActive ? 'primary' : 'primary'} size={18} pulse={isActive} />
             </span>
             <span className="text-sm tracking-tight relative z-10">{label}</span>
             {isActive && (

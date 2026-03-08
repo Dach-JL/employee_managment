@@ -6,6 +6,7 @@ import {
 import api from '../api/api';
 import { Users, FileText, CheckCircle, Activity, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import NeonIcon from '../components/ui/NeonIcon';
 
 const PIE_COLORS = ['#4F7CFF', '#00E5FF', '#FACC15', '#F43F5E', '#7A5CFF'];
 
@@ -134,8 +135,8 @@ const AnalyticsPage = () => {
                         <div className={`absolute -right-10 -top-10 w-40 h-40 ${metric.color.replace('text-', 'bg-')}/10 rounded-full blur-[50px] pointer-events-none group-hover:scale-150 transition-transform duration-700`} />
 
                         <div className="flex justify-between items-start mb-6 relative z-10">
-                            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border ${metric.bg} ${metric.color} ${metric.glow}`}>
-                                <metric.icon size={26} strokeWidth={2.5} />
+                            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border ${metric.bg} ${metric.glow}`}>
+                                <NeonIcon icon={metric.icon} color={metric.color === 'text-primary' ? 'primary' : metric.color === 'text-accent-cyan' ? 'cyan' : metric.color === 'text-warning' ? 'warning' : 'success'} size={26} />
                             </div>
                             <span className="flex items-center gap-1 text-xs font-bold text-success bg-success/10 px-2 py-1 rounded-md border border-success/20">
                                 +4.2%

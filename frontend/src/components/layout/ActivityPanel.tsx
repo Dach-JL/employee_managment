@@ -1,4 +1,5 @@
 import { Clock, CheckCircle2, AlertCircle, MessageSquare } from 'lucide-react';
+import NeonIcon from '../ui/NeonIcon';
 
 const activities = [
     {
@@ -7,7 +8,7 @@ const activities = [
         title: 'Task Approved',
         description: 'Your task "Logo Design" has been approved.',
         time: '2h ago',
-        icon: <CheckCircle2 size={16} className="text-success" />,
+        icon: <NeonIcon icon={CheckCircle2} color="success" size={16} />,
         color: 'success'
     },
     {
@@ -16,7 +17,7 @@ const activities = [
         title: 'New Announcement',
         description: 'Quarterly review meeting on Friday.',
         time: '4h ago',
-        icon: <MessageSquare size={16} className="text-neon-purple" />,
+        icon: <NeonIcon icon={MessageSquare} color="purple" size={16} />,
         color: 'neon-purple'
     },
     {
@@ -25,7 +26,7 @@ const activities = [
         title: 'Urgent Deadline',
         description: '"API Integration" is due in 3 hours.',
         time: '5h ago',
-        icon: <AlertCircle size={16} className="text-danger" />,
+        icon: <NeonIcon icon={AlertCircle} color="danger" size={16} />,
         color: 'danger'
     }
 ];

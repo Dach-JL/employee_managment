@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, type Variants } from 'framer-motion';
+import NeonIcon from '../components/ui/NeonIcon';
 import { useAuthStore } from '../store/useAuthStore';
 import {
     Clock, CheckCircle2, AlertCircle, ListTodo, FileText,
@@ -101,25 +102,25 @@ const EmployeeDashboard = () => {
             {/* Top Stat Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <StatCard
-                    icon={<ListTodo className="text-neon-blue" />}
+                    icon={<NeonIcon icon={ListTodo} color="primary" size={22} />}
                     label="Active Tasks"
                     value={loading ? '-' : activeTasks.length.toString()}
                     glowColor="neon-blue"
                 />
                 <StatCard
-                    icon={<AlertCircle className="text-danger" />}
+                    icon={<NeonIcon icon={AlertCircle} color="danger" size={22} />}
                     label="Overdue / Urgent"
                     value={loading ? '-' : overdueTasks.toString()}
                     glowColor="danger"
                 />
                 <StatCard
-                    icon={<CheckCircle2 className="text-success" />}
+                    icon={<NeonIcon icon={CheckCircle2} color="success" size={22} />}
                     label="Completed Today"
                     value={loading ? '-' : completedToday.toString()}
                     glowColor="success"
                 />
                 <StatCard
-                    icon={<MessageSquare className="text-neon-purple" />}
+                    icon={<NeonIcon icon={MessageSquare} color="purple" size={22} />}
                     label="Unread Messages"
                     value="3" // Mock data
                     glowColor="neon-purple"
