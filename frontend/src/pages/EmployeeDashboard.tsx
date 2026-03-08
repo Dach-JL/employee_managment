@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { useAuthStore } from '../store/useAuthStore';
 import {
     Clock, CheckCircle2, AlertCircle, ListTodo, FileText,
@@ -50,7 +50,7 @@ const EmployeeDashboard = () => {
     const overdueTasks = activeTasks.filter(t => new Date(t.dueDate) < new Date()).length;
 
     // Animation variants
-    const containerVariants = {
+    const containerVariants: Variants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
@@ -58,7 +58,7 @@ const EmployeeDashboard = () => {
         }
     };
 
-    const itemVariants = {
+    const itemVariants: Variants = {
         hidden: { y: 20, opacity: 0 },
         visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100 } }
     };
@@ -88,8 +88,8 @@ const EmployeeDashboard = () => {
                     <button
                         onClick={() => navigate('/reports/daily')}
                         className={`text-xs py-2 flex items-center gap-2 px-4 rounded-xl font-bold transition-all shadow-lg ${reportStatus.submitted
-                                ? 'bg-success/20 text-success border border-success/30'
-                                : 'btn-primary shadow-glow-blue'
+                            ? 'bg-success/20 text-success border border-success/30'
+                            : 'btn-primary shadow-glow-blue'
                             }`}
                     >
                         {reportStatus.submitted ? <CheckCircle2 size={14} /> : <FileText size={14} />}
@@ -223,8 +223,9 @@ const EmployeeDashboard = () => {
 };
 
 const StatCard = ({ icon, label, value, glowColor }: any) => {
+    const cardVariants: Variants = { hidden: { opacity: 0, scale: 0.95 }, visible: { opacity: 1, scale: 1 } };
     return (
-        <motion.div variants={{ hidden: { opacity: 0, scale: 0.95 }, visible: { opacity: 1, scale: 1 } }} className="glass-card p-5 relative overflow-hidden group">
+        <motion.div variants={cardVariants} className="glass-card p-5 relative overflow-hidden group">
             <div className={`absolute top-0 right-0 w-20 h-20 bg-${glowColor}/10 rounded-full blur-[25px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-x-1/3 -translate-y-1/3`} />
             <div className="flex items-center gap-4 relative z-10">
                 <div className={`w-12 h-12 rounded-xl glass flex items-center justify-center border-${glowColor}/20 group-hover:border-${glowColor}/50 transition-colors shadow-glow-[var(--color-${glowColor})] shrink-0`}>

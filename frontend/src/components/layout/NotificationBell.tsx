@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Bell, Check, MessageSquare, AlertCircle, Calendar, Star, X } from 'lucide-react';
+import { Bell, Check, MessageSquare, AlertCircle, Star, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Mock Notification Data

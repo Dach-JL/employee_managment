@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Skeleton } from '../components/ui/Skeleton';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/api';
 import { useAuthStore } from '../store/useAuthStore';
@@ -98,8 +99,10 @@ const TasksPage = () => {
 
             <main className="flex-1 w-full mt-4">
                 {loading ? (
-                    <div className="flex items-center justify-center h-64">
-                        <div className="w-10 h-10 border-4 border-primary/30 border-t-primary rounded-full animate-spin shadow-[0_0_15px_rgba(79,124,255,0.5)]"></div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <Skeleton className="h-[400px] w-full rounded-xl" />
+                        <Skeleton className="h-[400px] w-full rounded-xl" />
+                        <Skeleton className="h-[400px] w-full rounded-xl" />
                     </div>
                 ) : (
                     <AnimatePresence mode="wait">

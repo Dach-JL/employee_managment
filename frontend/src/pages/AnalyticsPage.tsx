@@ -210,7 +210,7 @@ const AnalyticsPage = () => {
                                     nameKey="priority"
                                     stroke="transparent"
                                 >
-                                    {priorityStats.map((entry, index) => (
+                                    {priorityStats.map((_entry, index) => (
                                         <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} style={{ filter: `drop-shadow(0px 0px 8px ${PIE_COLORS[index % PIE_COLORS.length]}80)` }} />
                                     ))}
                                 </Pie>
@@ -256,7 +256,7 @@ const AnalyticsPage = () => {
                                 <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
                                 <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(255,255,255,0.02)' }} />
                                 <Bar dataKey="tasks" name="Active Tasks" fill="#4F7CFF" radius={[6, 6, 0, 0]}>
-                                    {workloadByDept.map((entry, index) => (
+                                    {workloadByDept.map((_entry, index) => (
                                         <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
                                     ))}
                                 </Bar>

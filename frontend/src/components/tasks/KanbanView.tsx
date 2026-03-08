@@ -86,7 +86,19 @@ const KanbanView = ({ tasks, onTaskClick, onStatusChange }: KanbanViewProps) => 
                                         </span>
                                         <MoreHorizontal size={14} className="text-slate-500 opacity-0 group-hover/card:opacity-100 transition-opacity" />
                                     </div>
-                                    <h4 className="font-bold text-sm text-slate-200 mb-1 leading-tight group-hover/card:text-neon-blue transition-colors line-clamp-2">{task.title}</h4>
+                                    <h4 className="font-bold text-sm text-slate-200 mb-2 leading-tight group-hover/card:text-neon-blue transition-colors line-clamp-2">{task.title}</h4>
+
+                                    {/* Mock Progress Bar for Phase 18 - Assuming task progress or just purely visual for now */}
+                                    <div className="w-full bg-white/5 rounded-full h-1.5 overflow-hidden mb-2">
+                                        <motion.div
+                                            initial={{ width: 0 }}
+                                            animate={{ width: task.status === 'completed' ? '100%' : (task.status === 'in-progress' ? '50%' : '10%') }}
+                                            transition={{ duration: 1, ease: 'easeOut' }}
+                                            className={`h-1.5 rounded-full relative ${task.status === 'completed' ? 'bg-success shadow-[0_0_10px_rgba(34,197,94,0.8)]' : (task.status === 'in-progress' ? 'bg-neon-blue shadow-[0_0_10px_rgba(79,124,255,0.8)]' : 'bg-warning shadow-[0_0_10px_rgba(250,204,21,0.8)]')}`}
+                                        >
+                                            <div className="absolute inset-0 bg-white/30 animate-[shimmer_2s_infinite]" />
+                                        </motion.div>
+                                    </div>
 
                                     <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/5">
                                         {task.attachments && task.attachments.length > 0 ? (

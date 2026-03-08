@@ -34,57 +34,27 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
 
             <Route element={<ProtectedRoute />}>
-              <Route element={<Layout children={<RoleBasedDashboard />} />}>
+              <Route element={<Layout />}>
                 <Route path="/" element={<RoleBasedDashboard />} />
-              </Route>
-
-              {/* Explicit paths for manual navigation if needed */}
-              <Route element={<Layout children={<Dashboard />} />}>
                 <Route path="/admin-dashboard" element={<Dashboard />} />
-              </Route>
-              <Route element={<Layout children={<EmployeeDashboard />} />}>
                 <Route path="/staff-dashboard" element={<EmployeeDashboard />} />
-              </Route>
 
-              <Route element={<Layout children={<DailyReportPage />} />}>
                 <Route path="/reports/daily" element={<DailyReportPage />} />
-              </Route>
-
-              <Route element={<Layout children={<AnonymousReportPage />} />}>
                 <Route path="/reports/anonymous" element={<AnonymousReportPage />} />
-              </Route>
 
-              <Route element={<Layout children={<ChatPage />} />}>
                 <Route path="/chat" element={<ChatPage />} />
-              </Route>
-
-              <Route element={<Layout children={<AnnouncementsPage />} />}>
                 <Route path="/announcements" element={<AnnouncementsPage />} />
-              </Route>
-
-              <Route element={<Layout children={<AnalyticsPage />} />}>
                 <Route path="/analytics" element={<AnalyticsPage />} />
-              </Route>
-
-              <Route element={<Layout children={<PrivateMessagingPage />} />}>
                 <Route path="/messages" element={<PrivateMessagingPage />} />
-              </Route>
 
-              <Route element={<Layout children={<TasksPage />} />}>
                 <Route path="/tasks" element={<TasksPage />} />
-              </Route>
-              <Route element={<Layout children={<TaskDetailPage />} />}>
                 <Route path="/tasks/:id" element={<TaskDetailPage />} />
-              </Route>
+                <Route path="/profile" element={<ProfilePage />} />
 
-              <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-                <Route element={<Layout children={<ManageUsersPage />} />}>
+                {/* Admin-only routes within layout */}
+                <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
                   <Route path="/employees" element={<ManageUsersPage />} />
                 </Route>
-              </Route>
-
-              <Route element={<Layout children={<ProfilePage />} />}>
-                <Route path="/profile" element={<ProfilePage />} />
               </Route>
             </Route>
 

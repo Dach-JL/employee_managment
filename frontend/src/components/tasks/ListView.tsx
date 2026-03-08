@@ -37,7 +37,8 @@ const ListView = ({ tasks, onTaskClick }: ListViewProps) => {
                             <th className="py-4 px-6 font-bold w-[40%]">Task Title</th>
                             <th className="py-4 px-6 font-bold w-[15%]">Status</th>
                             <th className="py-4 px-6 font-bold w-[15%]">Priority</th>
-                            <th className="py-4 px-6 font-bold w-[20%]">Due Date</th>
+                            <th className="py-4 px-6 font-bold w-[15%]">Progress</th>
+                            <th className="py-4 px-6 font-bold w-[15%]">Due Date</th>
                             <th className="py-4 px-6 font-bold w-[10%] text-right">Actions</th>
                         </tr>
                     </thead>
@@ -56,6 +57,18 @@ const ListView = ({ tasks, onTaskClick }: ListViewProps) => {
                                 </td>
                                 <td className="py-4 px-6">{getStatusBadge(task.status)}</td>
                                 <td className="py-4 px-6">{getPriorityBadge(task.priority)}</td>
+                                <td className="py-4 px-6">
+                                    <div className="w-full max-w-[120px] bg-white/5 rounded-full h-1.5 overflow-hidden">
+                                        <motion.div
+                                            initial={{ width: 0 }}
+                                            animate={{ width: task.status === 'completed' ? '100%' : (task.status === 'in-progress' ? '50%' : '10%') }}
+                                            transition={{ duration: 1, ease: 'easeOut', delay: idx * 0.1 }}
+                                            className={`h-1.5 rounded-full relative ${task.status === 'completed' ? 'bg-success shadow-[0_0_10px_rgba(34,197,94,0.8)]' : (task.status === 'in-progress' ? 'bg-neon-blue shadow-[0_0_10px_rgba(79,124,255,0.8)]' : 'bg-warning shadow-[0_0_10px_rgba(250,204,21,0.8)]')}`}
+                                        >
+                                            <div className="absolute inset-0 bg-white/30 animate-[shimmer_2s_infinite]" />
+                                        </motion.div>
+                                    </div>
+                                </td>
                                 <td className="py-4 px-6 text-sm text-slate-400 font-semibold flex items-center gap-2">
                                     <CalendarIcon size={14} className="text-slate-500" />
                                     {new Date(task.dueDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}

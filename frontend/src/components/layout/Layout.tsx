@@ -1,17 +1,16 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore';
 import {
-    LogOut, LayoutDashboard, CheckSquare, Users, FileText,
-    ShieldAlert, MessageSquare, Bell, BarChart, ChevronRight,
-    Menu, X
+    LayoutDashboard, Users, FileText, CheckSquare, MessageSquare,
+    LogOut, ShieldAlert, ChevronRight, X, Bell, BarChart
 } from 'lucide-react';
 import TopBar from './TopBar';
 import ActivityPanel from './ActivityPanel';
 import MobileNav from './MobileNav';
 import { AnimatePresence, motion } from 'framer-motion';
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+const Layout = () => {
     const { user, logout } = useAuthStore();
     const navigate = useNavigate();
     const location = useLocation();
@@ -69,8 +68,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             <div className="p-4 border-t border-white/5 bg-white/[0.02] shrink-0 pb-safe">
                 <button
                     onClick={() => navigate('/profile')}
-                    className={`flex items-center gap-3 p-3 w-full rounded-2xl transition-all group overflow-hidden relative ${location.pathname === '/profile' ? 'glass border-primary/20 glow-blue' : 'hover:bg-white/5'
-                        }`}
+                    className={`flex items-center gap-3 p-3 w-full rounded-2xl transition-all group overflow-hidden relative ${location.pathname === '/profile' ? 'glass border-primary/20 glow-blue' : 'hover:bg-white/5'}`}
                 >
                     <div className="w-10 h-10 rounded-xl glass-card flex items-center justify-center text-primary font-bold overflow-hidden border-primary/20 shrink-0">
                         {user?.avatarUrl ? (
@@ -140,9 +138,18 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                         <div className="absolute top-0 right-0 w-[300px] lg:w-[500px] h-[300px] lg:h-[500px] bg-primary/5 rounded-full blur-[100px] lg:blur-[120px] pointer-events-none" />
                         <div className="absolute bottom-0 left-0 w-[300px] lg:w-[500px] h-[300px] lg:h-[500px] bg-neon-purple/5 rounded-full blur-[100px] lg:blur-[120px] pointer-events-none" />
 
-                        <div className="relative animate-page max-w-7xl mx-auto">
-                            {children}
-                        </div>
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={location.pathname}
+                                initial={{ opacity: 0, y: 15, filter: 'blur(8px)' }}
+                                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                                exit={{ opacity: 0, y: -15, filter: 'blur(8px)' }}
+                                transition={{ duration: 0.3, ease: 'easeOut' }}
+                                className="relative max-w-7xl mx-auto h-full"
+                            >
+                                <Outlet />
+                            </motion.div>
+                        </AnimatePresence>
                     </main>
 
                     {/* Activity Panel (Right Column - 300px) */}
@@ -162,10 +169,7 @@ const NavItem = ({ icon, label, path, currentPath, onClick }: { icon: React.Reac
     return (
         <button
             onClick={onClick}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all group relative overflow-hidden ${isActive
-                ? 'glass border-primary/20 text-primary font-bold glow-blue'
-                : 'text-slate-500 hover:text-slate-200 hover:bg-white/[0.03]'
-                }`}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all group relative overflow-hidden ${isActive ? 'glass border-primary/20 text-primary font-bold glow-blue' : 'text-slate-500 hover:text-slate-200 hover:bg-white/[0.03]'}`}
         >
             {isActive && (
                 <div className="absolute inset-0 bg-primary/5 animate-pulse" />

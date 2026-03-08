@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+import { Skeleton } from '../components/ui/Skeleton';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { useAuthStore } from '../store/useAuthStore';
 import {
     Clock, CheckCircle2, AlertCircle, Users, Activity,
@@ -77,7 +78,7 @@ const Dashboard = () => {
     }, []);
 
     // Animation variants
-    const containerVariants = {
+    const containerVariants: Variants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
@@ -85,7 +86,7 @@ const Dashboard = () => {
         }
     };
 
-    const itemVariants = {
+    const itemVariants: Variants = {
         hidden: { y: 20, opacity: 0 },
         visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100 } }
     };
@@ -121,44 +122,48 @@ const Dashboard = () => {
 
             {/* Top Cards Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                <StatCard
-                    icon={<Users className="text-neon-blue" />}
-                    label="Total Employees"
-                    value={loading ? '-' : stats.totalEmployees.toString()}
-                    trend="+12% this month"
-                    trendUp={true}
-                    glowColor="neon-blue"
-                />
-                <StatCard
-                    icon={<Clock className="text-warning" />}
-                    label="Tasks In Progress"
-                    value={loading ? '-' : stats.inProgress.toString()}
-                    trend="Active bandwidth"
-                    glowColor="warning"
-                />
-                <StatCard
-                    icon={<CheckCircle2 className="text-success" />}
-                    label="Completed Tasks"
-                    value={loading ? '-' : stats.completed.toString()}
-                    trend="+5% from last week"
-                    trendUp={true}
-                    glowColor="success"
-                />
-                <StatCard
-                    icon={<AlertCircle className="text-danger" />}
-                    label="Overdue Tasks"
-                    value={loading ? '-' : stats.overdue.toString()}
-                    trend="-2% from last week"
-                    trendUp={false}
-                    glowColor="danger"
-                />
-                <StatCard
-                    icon={<ShieldAlert className="text-neon-purple" />}
-                    label="Anonymous Reports"
-                    value={loading ? '-' : stats.reports.toString()}
-                    trend="Requires attention"
-                    glowColor="neon-purple"
-                />
+                {loading ? Array(5).fill(0).map((_, i) => <Skeleton key={i} className="h-[120px] rounded-xl" />) : (
+                    <>
+                        <StatCard
+                            icon={<Users className="text-neon-blue" />}
+                            label="Total Employees"
+                            value={stats.totalEmployees.toString()}
+                            trend="+12% this month"
+                            trendUp={true}
+                            glowColor="neon-blue"
+                        />
+                        <StatCard
+                            icon={<Clock className="text-warning" />}
+                            label="Tasks In Progress"
+                            value={loading ? '-' : stats.inProgress.toString()}
+                            trend="Active bandwidth"
+                            glowColor="warning"
+                        />
+                        <StatCard
+                            icon={<CheckCircle2 className="text-success" />}
+                            label="Completed Tasks"
+                            value={loading ? '-' : stats.completed.toString()}
+                            trend="+5% from last week"
+                            trendUp={true}
+                            glowColor="success"
+                        />
+                        <StatCard
+                            icon={<AlertCircle className="text-danger" />}
+                            label="Overdue Tasks"
+                            value={loading ? '-' : stats.overdue.toString()}
+                            trend="-2% from last week"
+                            trendUp={false}
+                            glowColor="danger"
+                        />
+                        <StatCard
+                            icon={<ShieldAlert className="text-neon-purple" />}
+                            label="Anonymous Reports"
+                            value={stats.reports.toString()}
+                            trend="Requires attention"
+                            glowColor="neon-purple"
+                        />
+                    </>
+                )}
             </div>
 
             {/* Charts Row */}
@@ -283,7 +288,7 @@ const Dashboard = () => {
                                     contentStyle={{ backgroundColor: 'rgba(15, 23, 42, 0.9)', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '8px' }}
                                 />
                                 <Bar dataKey="Tasks" fill="#00E5FF" radius={[4, 4, 0, 0]}>
-                                    {departmentData.map((entry, index) => (
+                                    {departmentData.map((_entry, index) => (
                                         <Cell key={`cell-${index}`} fill={`url(#barGradient-${index})`} />
                                     ))}
                                 </Bar>
